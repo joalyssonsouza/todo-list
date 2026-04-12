@@ -3,47 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+    <title>Todo List | Organizador de Tarefas</title>
 
+    <!-- Fonte -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
-    <!-- Container principal -->
     <div class="container">
 
         <header class="header">
-            <button id="themeToggle">🌙</button>
-            
+            <button id="themeToggle" aria-label="Alternar tema">🌙</button>
+
             <h1>Minha Todo List</h1>
             <p>Organize suas tarefas de forma simples e eficiente.</p>
-
         </header>
 
-        <!-- Área de input -->
         <section class="input-area">
-            <input 
-                type="text" 
-                id="taskInput" 
-                placeholder="Digite uma nova tarefa..."
-            >
+            <label for="taskInput" class="visually-hidden">Nova tarefa</label>
+            <input type="text" id="taskInput" placeholder="Digite uma nova tarefa...">
             <button id="addTaskBtn">Adicionar</button>
         </section>
 
-        <!-- Filtros (vai usar no JS depois) -->
         <section class="filters">
             <button class="filter-btn active" data-filter="all">Todas</button>
             <button class="filter-btn" data-filter="completed">Concluídas</button>
             <button class="filter-btn" data-filter="pending">Pendentes</button>
         </section>
 
-        <!-- Lista de tarefas -->
-        <ul id="taskList" class="task-list">
-            <!-- Tarefas serão adicionadas aqui via JavaScript -->
-        </ul>
+        <ul id="taskList" class="task-list"></ul>
 
-        <!-- Rodapé / ações extras -->
         <footer class="footer">
             <span id="taskCount">0 tarefas</span>
             <button id="clearCompleted">Limpar concluídas</button>
@@ -51,7 +43,6 @@
 
     </div>
 
-    <!-- Link do JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>

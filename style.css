@@ -5,7 +5,6 @@
     box-sizing: border-box;
 }
 
-/* Corpo */
 body {
     font-family: 'Poppins', sans-serif;
     background: #f4f6fb;
@@ -32,27 +31,18 @@ body {
     margin-bottom: 20px;
 }
 
-/* Botão dark mode */
 #themeToggle {
     position: absolute;
     top: 0;
     right: 0;
-
     background: #edf2f7;
     border: none;
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
-
-    transition: 0.3s;
-}
-
-#themeToggle:hover {
-    background: #d6dbe3;
 }
 
 .header h1 {
-    font-weight: 600;
     color: #333;
 }
 
@@ -74,12 +64,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 10px;
     outline: none;
-    transition: 0.3s;
-}
-
-.input-area input:focus {
-    border-color: #5a67d8;
-    box-shadow: 0 0 0 2px rgba(90, 103, 216, 0.2);
+    font-size: 16px;
 }
 
 .input-area button {
@@ -89,11 +74,6 @@ body {
     color: white;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.input-area button:hover {
-    background: #434190;
 }
 
 /* Filtros */
@@ -106,12 +86,10 @@ body {
 .filter-btn {
     flex: 1;
     padding: 8px;
-    border: none;
     background: #edf2f7;
+    border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
-    font-size: 13px;
 }
 
 .filter-btn.active {
@@ -135,12 +113,6 @@ body {
     padding: 12px;
     border-radius: 10px;
     margin-bottom: 10px;
-    transition: 0.3s;
-}
-
-.task:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .task.completed span {
@@ -148,149 +120,64 @@ body {
     opacity: 0.5;
 }
 
-/* Texto */
 .task span {
     flex: 1;
-    font-size: 14px;
 }
 
 /* Botão delete */
 .delete-btn {
-    background: transparent;
+    background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-.delete-btn:hover {
-    transform: scale(1.2);
 }
 
 /* Footer */
 .footer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-top: 15px;
-    font-size: 14px;
-    color: #555;
 }
 
 .footer button {
-    border: none;
-    background: rgb(0, 0, 0);
+    background: black;
     color: white;
+    border: none;
     padding: 6px 10px;
     border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
 }
 
-.footer button:hover {
-    background: rgba(0, 0, 0, 0.788);
-}
-
-/* ==============================
-   DARK MODE
-============================== */
-
-body.dark .header h1 {
-    color: #ffffff;
-}
-
+/* Dark Mode */
 body.dark {
     background: #1a202c;
 }
 
 body.dark .container {
     background: #2d3748;
-    color: #f7fafc;
-}
-
-body.dark .header p {
-    color: #cbd5e0;
-}
-
-body.dark .input-area input {
-    background: #4a5568;
-    color: white;
-    border: none;
-}
-
-body.dark .task {
-    background: #4a5568;
-}
-
-body.dark .filter-btn {
-    background: #4a5568;
     color: white;
 }
 
-body.dark .filter-btn.active {
-    background: #5a67d8;
+body.dark .header h1 {
+    color: white;
 }
 
-body.dark .footer {
-    color: #cbd5e0;
-}
-
-/* ==============================
-   RESPONSIVIDADE
-============================== */
-
+/* Responsividade */
 @media (max-width: 600px) {
-
-    body {
-        align-items: flex-start;
-        padding: 20px 0;
-    }
-
     .container {
         width: 100%;
-        max-width: 100%;
         border-radius: 0;
-        padding: 20px;
-    }
-
-    .input-area input {
-        font-size: 16px;
-        padding: 14px;
     }
 
     .input-area {
         flex-direction: column;
     }
 
-    .input-area button {
-        width: 100%;
-    }
-
     .filters {
         flex-direction: column;
     }
-
-    .footer {
-        flex-direction: column;
-        gap: 10px;
-    }
 }
 
-/* TABLET */
-@media (min-width: 768px) {
-    .container {
-        max-width: 600px;
-        border-radius: 16px;
-    }
-
-    .filters {
-        flex-direction: row;
-    }
-}
-
-/* DESKTOP */
-@media (min-width: 1024px) {
-    .container {
-        max-width: 500px;
-    }
+/* Acessibilidade */
+.visually-hidden {
+    position: absolute;
+    left: -9999px;
 }

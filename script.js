@@ -1,30 +1,6 @@
-// ==============================
-// ARMAZENAMENTO DE TAREFAS
-// ==============================
-
 let tasks = [];
 
-// salva no navegador
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-// carrega ao iniciar
-function loadTasks() {
-    const storedTasks = localStorage.getItem("tasks");
-
-    if (storedTasks) {
-        tasks = JSON.parse(storedTasks);
-
-        tasks.forEach(task => createTaskElement(task));
-    }
-}
-
-
-// ==============================
-// SELEÇÃO DE ELEMENTOS
-// ==============================
-
+// ELEMENTOS
 const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
@@ -33,44 +9,27 @@ const clearCompletedBtn = document.getElementById("clearCompleted");
 const filterButtons = document.querySelectorAll(".filter-btn");
 const themeToggle = document.getElementById("themeToggle");
 
-
-// ==============================
-// FILTRO DE TAREFAS
-// ==============================
-
-function filterTasks(filter) {
-    const allTasks = document.querySelectorAll(".task");
-
-    allTasks.forEach(task => {
-        const isCompleted = task.classList.contains("completed");
-
-        if (filter === "all") {
-            task.style.display = "flex";
-        } 
-        else if (filter === "completed") {
-            task.style.display = isCompleted ? "flex" : "none";
-        } 
-        else if (filter === "pending") {
-            task.style.display = !isCompleted ? "flex" : "none";
-        }
-    });
+// SALVAR
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+// CARREGAR
+function loadTasks() {
+    const stored = localStorage.getItem("tasks");
+    if (stored) {
+        tasks = JSON.parse(stored);
+        tasks.forEach(createTaskElement);
+    }
+}
 
-// ==============================
-// CRIAR ELEMENTO DA TAREFA
-// ==============================
-
+// CRIAR ELEMENTO
 function createTaskElement(task) {
     const li = document.createElement("li");
     li.classList.add("task");
-
-    // ID único no elemento HTML
     li.setAttribute("data-id", task.id);
 
-    if (task.completed) {
-        li.classList.add("completed");
-    }
+    if (task.completed) li.classList.add("completed");
 
     li.innerHTML = `
         <input type="checkbox" class="task-check" ${task.completed ? "checked" : ""}>
@@ -81,147 +40,104 @@ function createTaskElement(task) {
     taskList.appendChild(li);
 }
 
-
-// ==============================
-// ADICIONAR TAREFA
-// ==============================
-
+// ADICIONAR
 function addTask() {
-    const taskText = taskInput.value.trim();
-
-    if (taskText === "") {
-        alert("Digite uma tarefa!");
-        return;
-    }
+    const text = taskInput.value.trim();
+    if (!text) return alert("Digite uma tarefa!");
 
     const task = {
-        id: Date.now(), // ID único
-        text: taskText,
+        id: Date.now(),
+        text,
         completed: false
     };
 
     tasks.push(task);
-
     createTaskElement(task);
 
     taskInput.value = "";
-
     saveTasks();
     updateTaskCount();
 }
 
-
-// ==============================
 // EVENTOS
-// ==============================
-
-// botão
 addTaskBtn.addEventListener("click", addTask);
 
-// enter
-taskInput.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-        addTask();
-    }
+taskInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") addTask();
 });
 
+taskList.addEventListener("click", e => {
+    const taskItem = e.target.closest(".task");
+    if (!taskItem) return;
 
-// ==============================
-// EVENTO DOS FILTROS
-// ==============================
+    const id = Number(taskItem.getAttribute("data-id"));
+    const index = tasks.findIndex(t => t.id === id);
 
-filterButtons.forEach(button => {
-    button.addEventListener("click", () => {
-
-        // remove ativo de todos
-        filterButtons.forEach(btn => btn.classList.remove("active"));
-
-        // adiciona ativo no clicado
-        button.classList.add("active");
-
-        const filter = button.getAttribute("data-filter");
-
-        filterTasks(filter);
-    });
-});
-
-
-// ==============================
-// EVENTOS NA LISTA
-// ==============================
-
-taskList.addEventListener("click", function (e) {
-
-    const taskItem = e.target.parentElement;
-
-    // pega ID da tarefa
-    const taskId = Number(taskItem.getAttribute("data-id"));
-
-    const taskIndex = tasks.findIndex(t => t.id === taskId);
-
-    // concluir
     if (e.target.classList.contains("task-check")) {
         taskItem.classList.toggle("completed");
-
-        tasks[taskIndex].completed = e.target.checked;
+        tasks[index].completed = e.target.checked;
         saveTasks();
     }
 
-    // deletar
     if (e.target.classList.contains("delete-btn")) {
         taskItem.remove();
-
-        tasks.splice(taskIndex, 1);
+        tasks.splice(index, 1);
         saveTasks();
         updateTaskCount();
     }
 });
 
-    // ==============================
-// DARK MODE
-// ==============================
-
-themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    // muda ícone
-    if (document.body.classList.contains("dark")) {
-        themeToggle.textContent = "☀️";
-    } else {
-        themeToggle.textContent = "🌙";
-    }
-});
-
-
-// ==============================
 // CONTADOR
-// ==============================
-
 function updateTaskCount() {
-    taskCount.textContent = `${tasks.length} tarefas`;
+    const total = tasks.length;
+    taskCount.textContent = total === 1 ? "1 tarefa" : `${total} tarefas`;
 }
 
-
-// ==============================
-// LIMPAR CONCLUÍDAS
-// ==============================
-
-clearCompletedBtn.addEventListener("click", function () {
-
-    tasks = tasks.filter(task => !task.completed);
-
+// LIMPAR
+clearCompletedBtn.addEventListener("click", () => {
+    tasks = tasks.filter(t => !t.completed);
     taskList.innerHTML = "";
-
-    tasks.forEach(task => createTaskElement(task));
-
+    tasks.forEach(createTaskElement);
     saveTasks();
     updateTaskCount();
 });
 
+// DARK MODE
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    const dark = document.body.classList.contains("dark");
+    localStorage.setItem("theme", dark ? "dark" : "light");
+    themeToggle.textContent = dark ? "☀️" : "🌙";
+});
 
-// ==============================
-// INICIALIZAÇÃO
-// ==============================
+function loadTheme() {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
+        document.body.classList.add("dark");
+        themeToggle.textContent = "☀️";
+    }
+}
 
+// FILTRO
+filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const filter = btn.dataset.filter;
+
+        document.querySelectorAll(".task").forEach(task => {
+            const done = task.classList.contains("completed");
+
+            task.style.display =
+                filter === "all" ? "flex" :
+                filter === "completed" && done ? "flex" :
+                filter === "pending" && !done ? "flex" : "none";
+        });
+    });
+});
+
+// INIT
 loadTasks();
+loadTheme();
 updateTaskCount();
