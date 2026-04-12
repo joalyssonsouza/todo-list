@@ -27,8 +27,28 @@ body {
 
 /* Header */
 .header {
+    position: relative;
     text-align: center;
     margin-bottom: 20px;
+}
+
+/* Botão dark mode */
+#themeToggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    background: #edf2f7;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+#themeToggle:hover {
+    background: #d6dbe3;
 }
 
 .header h1 {
@@ -169,4 +189,48 @@ body {
 
 .footer button:hover {
     background: rgba(0, 0, 0, 0.788);
+}
+
+/* ==============================
+   DARK MODE
+============================== */
+
+body.dark .header h1 {
+    color: #ffffff;
+}
+
+body.dark {
+    background: #1a202c;
+}
+
+body.dark .container {
+    background: #2d3748;
+    color: #f7fafc;
+}
+
+body.dark .header p {
+    color: #cbd5e0;
+}
+
+body.dark .input-area input {
+    background: #4a5568;
+    color: white;
+    border: none;
+}
+
+body.dark .task {
+    background: #4a5568;
+}
+
+body.dark .filter-btn {
+    background: #4a5568;
+    color: white;
+}
+
+body.dark .filter-btn.active {
+    background: #5a67d8;
+}
+
+body.dark .footer {
+    color: #cbd5e0;
 }

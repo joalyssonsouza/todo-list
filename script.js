@@ -31,6 +31,7 @@ const taskList = document.getElementById("taskList");
 const taskCount = document.getElementById("taskCount");
 const clearCompletedBtn = document.getElementById("clearCompleted");
 const filterButtons = document.querySelectorAll(".filter-btn");
+const themeToggle = document.getElementById("themeToggle");
 
 
 // ==============================
@@ -173,6 +174,21 @@ taskList.addEventListener("click", function (e) {
         tasks.splice(taskIndex, 1);
         saveTasks();
         updateTaskCount();
+    }
+});
+
+    // ==============================
+// DARK MODE
+// ==============================
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    // muda ícone
+    if (document.body.classList.contains("dark")) {
+        themeToggle.textContent = "☀️";
+    } else {
+        themeToggle.textContent = "🌙";
     }
 });
 
