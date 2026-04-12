@@ -234,3 +234,63 @@ body.dark .filter-btn.active {
 body.dark .footer {
     color: #cbd5e0;
 }
+
+/* ==============================
+   RESPONSIVIDADE
+============================== */
+
+@media (max-width: 600px) {
+
+    body {
+        align-items: flex-start;
+        padding: 20px 0;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        padding: 20px;
+    }
+
+    .input-area input {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .input-area {
+        flex-direction: column;
+    }
+
+    .input-area button {
+        width: 100%;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+    .container {
+        max-width: 600px;
+        border-radius: 16px;
+    }
+
+    .filters {
+        flex-direction: row;
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 500px;
+    }
+}
