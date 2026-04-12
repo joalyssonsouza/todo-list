@@ -1,84 +1,211 @@
-/*Seleção de elementos */
+// ==============================
+// ARMAZENAMENTO DE TAREFAS
+// ==============================
+
+let tasks = [];
+
+// salva no navegador
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// carrega ao iniciar
+function loadTasks() {
+    const storedTasks = localStorage.getItem("tasks");
+
+    if (storedTasks) {
+        tasks = JSON.parse(storedTasks);
+
+        tasks.forEach(task => createTaskElement(task));
+    }
+}
+
+
+// ==============================
+// SELEÇÃO DE ELEMENTOS
+// ==============================
+
 const taskInput = document.getElementById("taskInput");
-const addTaskBtn = document.getElementById("addTaskBtn"); 
+const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
 const taskCount = document.getElementById("taskCount");
 const clearCompletedBtn = document.getElementById("clearCompleted");
+const filterButtons = document.querySelectorAll(".filter-btn");
 
-/* Função: adicionar tarefas */
+
+// ==============================
+// FILTRO DE TAREFAS
+// ==============================
+
+function filterTasks(filter) {
+    const allTasks = document.querySelectorAll(".task");
+
+    allTasks.forEach(task => {
+        const isCompleted = task.classList.contains("completed");
+
+        if (filter === "all") {
+            task.style.display = "flex";
+        } 
+        else if (filter === "completed") {
+            task.style.display = isCompleted ? "flex" : "none";
+        } 
+        else if (filter === "pending") {
+            task.style.display = !isCompleted ? "flex" : "none";
+        }
+    });
+}
+
+
+// ==============================
+// CRIAR ELEMENTO DA TAREFA
+// ==============================
+
+function createTaskElement(task) {
+    const li = document.createElement("li");
+    li.classList.add("task");
+
+    // ID único no elemento HTML
+    li.setAttribute("data-id", task.id);
+
+    if (task.completed) {
+        li.classList.add("completed");
+    }
+
+    li.innerHTML = `
+        <input type="checkbox" class="task-check" ${task.completed ? "checked" : ""}>
+        <span>${task.text}</span>
+        <button class="delete-btn">🗑️</button>
+    `;
+
+    taskList.appendChild(li);
+}
+
+
+// ==============================
+// ADICIONAR TAREFA
+// ==============================
 
 function addTask() {
     const taskText = taskInput.value.trim();
 
-    /* Evita adicionar tarefa vazia  */
     if (taskText === "") {
         alert("Digite uma tarefa!");
         return;
     }
 
-    /* Criando elemento da tarefa (li) */
-    const li = document.createElement("li")
-    li.classList.add("task");
+    const task = {
+        id: Date.now(), // ID único
+        text: taskText,
+        completed: false
+    };
 
-    /* Estrutura interna da tarefa */
-    li.innerHTML=`
-    <input type="checkbox" class="task-check">
-    <span>${taskText}</span>
-    <button class="delete-btn">🗑️</button>
-    `;
+    tasks.push(task);
 
-    /* Adiciona na lista */
-    taskList.appendChild(li);
+    createTaskElement(task);
 
-    /* Limpar o campo input */
     taskInput.value = "";
 
-    /* Atualiza contador */
+    saveTasks();
     updateTaskCount();
 }
 
-    /* Eventos de adição de tarefa */
-    /* Clique no botão */
-    addTaskBtn.addEventListener("click", addTask);
 
-    /* Pressionar enter no input */
-    taskInput.addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-            addTask();
-        }
-    } );
+// ==============================
+// EVENTOS
+// ==============================
 
-   /* EVENTOS NA LISTA (DELEÇÃO E CHECK) */ 
-   taskList.addEventListener("click", function (e) {
+// botão
+addTaskBtn.addEventListener("click", addTask);
 
-    // Marcar como concluída
+// enter
+taskInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        addTask();
+    }
+});
+
+
+// ==============================
+// EVENTO DOS FILTROS
+// ==============================
+
+filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+
+        // remove ativo de todos
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+
+        // adiciona ativo no clicado
+        button.classList.add("active");
+
+        const filter = button.getAttribute("data-filter");
+
+        filterTasks(filter);
+    });
+});
+
+
+// ==============================
+// EVENTOS NA LISTA
+// ==============================
+
+taskList.addEventListener("click", function (e) {
+
+    const taskItem = e.target.parentElement;
+
+    // pega ID da tarefa
+    const taskId = Number(taskItem.getAttribute("data-id"));
+
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+
+    // concluir
     if (e.target.classList.contains("task-check")) {
-        const taskItem = e.target.parentElement;
         taskItem.classList.toggle("completed");
+
+        tasks[taskIndex].completed = e.target.checked;
+        saveTasks();
     }
 
-    // Deletar tarefa
+    // deletar
     if (e.target.classList.contains("delete-btn")) {
-        const taskItem = e.target.parentElement;
         taskItem.remove();
 
+        tasks.splice(taskIndex, 1);
+        saveTasks();
         updateTaskCount();
     }
-
 });
 
-    /* CONTADOR DE TAREFAS */
-    function updateTaskCount() {
-    const total = taskList.children.length;
-    taskCount.textContent = `${total} tarefas`;
+
+// ==============================
+// CONTADOR
+// ==============================
+
+function updateTaskCount() {
+    taskCount.textContent = `${tasks.length} tarefas`;
 }
 
-    /* LIMPAR TAREFAS CONCLUÍDAS */
-    clearCompletedBtn.addEventListener("click", function () {
 
-    const completedTasks = document.querySelectorAll(".task.completed");
+// ==============================
+// LIMPAR CONCLUÍDAS
+// ==============================
 
-    completedTasks.forEach(task => task.remove());
+clearCompletedBtn.addEventListener("click", function () {
 
+    tasks = tasks.filter(task => !task.completed);
+
+    taskList.innerHTML = "";
+
+    tasks.forEach(task => createTaskElement(task));
+
+    saveTasks();
     updateTaskCount();
 });
+
+
+// ==============================
+// INICIALIZAÇÃO
+// ==============================
+
+loadTasks();
+updateTaskCount();
