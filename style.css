@@ -1,31 +1,31 @@
-/* Resert básico */
-*{
+/* Reset */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Corpo da página*/
+/* Corpo */
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    font-family: 'Poppins', sans-serif;
+    background: #f4f6fb;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Container principal */
+/* Container */
 .container {
-    background: #fff;
+    background: #ffffff;
     width: 100%;
     max-width: 500px;
     padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-/*Header */
+/* Header */
 .header {
     text-align: center;
     margin-bottom: 20px;
@@ -33,7 +33,7 @@ body {
 
 .header h1 {
     font-weight: 600;
-    margin-bottom: 5px;
+    color: #333;
 }
 
 .header p {
@@ -41,7 +41,7 @@ body {
     color: #777;
 }
 
-/* Área de input */
+/* Input */
 .input-area {
     display: flex;
     gap: 10px;
@@ -50,35 +50,36 @@ body {
 
 .input-area input {
     flex: 1;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     outline: none;
     transition: 0.3s;
 }
 
 .input-area input:focus {
-    border-color: #4facfe;
+    border-color: #5a67d8;
+    box-shadow: 0 0 0 2px rgba(90, 103, 216, 0.2);
 }
 
 .input-area button {
-    padding: 10px 15px;
+    padding: 12px 16px;
     border: none;
-    background: #4facfe;
-    color: #fff;
-    border-radius: 8px;
+    background: #5a67d8;
+    color: white;
+    border-radius: 10px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .input-area button:hover {
-    background: #3a8de0;
+    background: #434190;
 }
 
 /* Filtros */
 .filters {
     display: flex;
-    justify-content: space-between;
+    gap: 5px;
     margin-bottom: 15px;
 }
 
@@ -86,54 +87,64 @@ body {
     flex: 1;
     padding: 8px;
     border: none;
-    background: #eee;
-    margin: 0 3px;
-    border-radius: 6px;
+    background: #edf2f7;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
+    font-size: 13px;
 }
 
 .filter-btn.active {
-    background: #4facfe;
+    background: #5a67d8;
     color: white;
 }
 
-/*Lista de tarefas */
+/* Lista */
 .task-list {
     list-style: none;
     max-height: 300px;
     overflow-y: auto;
 }
 
-/* Item da tarefa */
+/* Item */
 .task {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: #f9f9f9;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    transition: 0,6s;
+    gap: 10px;
+    background: #f9fafc;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: 0.3s;
 }
 
-.task-completed {
+.task:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.task.completed span {
     text-decoration: line-through;
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
-/* Texto da tarefa */
+/* Texto */
 .task span {
     flex: 1;
-    margin-left: 10px;
+    font-size: 14px;
 }
 
-/* Botões da tarefa */
-.task button {
-    border: none;
+/* Botão delete */
+.delete-btn {
     background: transparent;
+    border: none;
     cursor: pointer;
     font-size: 16px;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    transform: scale(1.2);
 }
 
 /* Footer */
@@ -143,18 +154,19 @@ body {
     align-items: center;
     margin-top: 15px;
     font-size: 14px;
+    color: #555;
 }
 
 .footer button {
     border: none;
-    background: #4facfe;
+    background: rgb(0, 0, 0);
     color: white;
     padding: 6px 10px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .footer button:hover {
-    background: blue;
+    background: rgba(0, 0, 0, 0.788);
 }
