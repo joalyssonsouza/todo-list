@@ -3,47 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List | Organizador de Tarefas</title>
+    <title>Todo List - Organize suas tarefas de forma simples</title>
 
-    <!-- Fonte -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <header class="header">
-            <button id="themeToggle" aria-label="Alternar tema">🌙</button>
+    <header class="header">
+        <button id="themeToggle" aria-label="Alternar tema">🌙</button>
+        <h1>Minha Todo List</h1>
+        <p>Organize suas tarefas de forma simples e eficiente.</p>
+    </header>
 
-            <h1>Minha Todo List</h1>
-            <p>Organize suas tarefas de forma simples e eficiente.</p>
-        </header>
+    <section class="input-area">
+        <label for="taskInput" class="visually-hidden">Nova tarefa</label>
+        <input type="text" id="taskInput" placeholder="Digite uma nova tarefa...">
+        <button id="addTaskBtn">Adicionar</button>
+    </section>
 
-        <section class="input-area">
-            <label for="taskInput" class="visually-hidden">Nova tarefa</label>
-            <input type="text" id="taskInput" placeholder="Digite uma nova tarefa...">
-            <button id="addTaskBtn">Adicionar</button>
-        </section>
+    <section class="filters">
+        <button class="filter-btn active" data-filter="all">Todas</button>
+        <button class="filter-btn" data-filter="completed">Concluídas</button>
+        <button class="filter-btn" data-filter="pending">Pendentes</button>
+    </section>
 
-        <section class="filters">
-            <button class="filter-btn active" data-filter="all">Todas</button>
-            <button class="filter-btn" data-filter="completed">Concluídas</button>
-            <button class="filter-btn" data-filter="pending">Pendentes</button>
-        </section>
-
+    <div class="task-container">
         <ul id="taskList" class="task-list"></ul>
         <p id="emptyMessage">Nenhuma tarefa ainda 👀</p>
-
-        <footer class="footer">
-            <span id="taskCount">0 tarefas</span>
-            <button id="clearCompleted">Limpar concluídas</button>
-        </footer>
-
     </div>
 
-    <script src="script.js"></script>
+    <footer class="footer">
+        <span id="taskCount">0 tarefas</span>
+        <button id="clearCompleted">Limpar concluídas</button>
+    </footer>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

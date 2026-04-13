@@ -1,10 +1,15 @@
-/* Reset */
+/* ==============================
+   RESET
+============================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ==============================
+   BODY
+============================== */
 body {
     font-family: 'Poppins', sans-serif;
     background: #f4f6fb;
@@ -14,7 +19,9 @@ body {
     justify-content: center;
 }
 
-/* Container */
+/* ==============================
+   CONTAINER
+============================== */
 .container {
     background: #ffffff;
     width: 100%;
@@ -24,7 +31,9 @@ body {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Header */
+/* ==============================
+   HEADER
+============================== */
 .header {
     position: relative;
     text-align: center;
@@ -40,6 +49,11 @@ body {
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+#themeToggle:hover {
+    background: #d6dbe3;
 }
 
 .header h1 {
@@ -51,7 +65,9 @@ body {
     color: #777;
 }
 
-/* Input */
+/* ==============================
+   INPUT
+============================== */
 .input-area {
     display: flex;
     gap: 10px;
@@ -74,9 +90,16 @@ body {
     color: white;
     border-radius: 10px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-/* Filtros */
+.input-area button:hover {
+    background: #434190;
+}
+
+/* ==============================
+   FILTROS
+============================== */
 .filters {
     display: flex;
     gap: 5px;
@@ -90,6 +113,7 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .filter-btn.active {
@@ -97,18 +121,28 @@ body {
     color: white;
 }
 
-/* Lista */
+/* ==============================
+   LISTA
+============================== */
 .task-list {
     list-style: none;
     max-height: 300px;
     overflow-y: auto;
 }
 
-/* ==============================
-   ANIMAÇÕES
-============================== */
+/* ITEM */
+.task {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f9fafc;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.3s ease;
+}
 
-/* entrada da tarefa */
+/* ANIMAÇÃO ENTRADA */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -120,26 +154,16 @@ body {
     }
 }
 
-.task {
-    animation: fadeIn 0.3s ease;
-}
-
-/* saída da tarefa */
+/* ANIMAÇÃO SAÍDA */
 .task.removing {
     opacity: 0;
     transform: translateX(50px);
     transition: 0.3s;
 }
 
-/* Item */
-.task {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f9fafc;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+/* TEXTO */
+.task span {
+    flex: 1;
 }
 
 .task.completed span {
@@ -147,18 +171,22 @@ body {
     opacity: 0.5;
 }
 
-.task span {
-    flex: 1;
-}
-
-/* Botão delete */
+/* DELETE */
 .delete-btn {
     background: none;
     border: none;
     cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
 }
 
-/* Footer */
+.delete-btn:hover {
+    transform: scale(1.2);
+}
+
+/* ==============================
+   FOOTER
+============================== */
 .footer {
     display: flex;
     justify-content: space-between;
@@ -171,12 +199,16 @@ body {
     border: none;
     padding: 6px 10px;
     border-radius: 8px;
+    cursor: pointer;
+}
+
+.footer button:hover {
+    background: #333;
 }
 
 /* ==============================
-   ESTADO VAZIO (sem tarefas)
+   ESTADO VAZIO
 ============================== */
-
 #emptyMessage {
     text-align: center;
     color: #999;
@@ -184,35 +216,55 @@ body {
     font-size: 14px;
 }
 
-/* Dark Mode */
-
-body.dark .task {
-    background: #2d3748 !important;
-    color: #f7fafc !important;
-}
-
-body.dark .task span {
-    color: #f7fafc !important;
-}
-
+/* ==============================
+   DARK MODE
+============================== */
 body.dark {
     background: #1a202c;
 }
 
 body.dark .container {
     background: #2d3748;
-    color: white;
+    color: #f7fafc;
 }
 
 body.dark .header h1 {
     color: white;
 }
 
-/* Responsividade */
+body.dark .header p {
+    color: #cbd5e0;
+}
+
+body.dark .task {
+    background: #4a5568;
+}
+
+body.dark .task span {
+    color: #f7fafc;
+}
+
+body.dark .filter-btn {
+    background: #4a5568;
+    color: white;
+}
+
+body.dark .filter-btn.active {
+    background: #5a67d8;
+}
+
+/* ==============================
+   RESPONSIVO
+============================== */
 @media (max-width: 600px) {
+    body {
+        align-items: flex-start;
+        padding: 20px 0;
+    }
+
     .container {
-        width: 100%;
         border-radius: 0;
+        width: 100%;
     }
 
     .input-area {
@@ -222,10 +274,19 @@ body.dark .header h1 {
     .filters {
         flex-direction: column;
     }
+
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 
-/* Acessibilidade */
+/* ==============================
+   ACESSIBILIDADE
+============================== */
 .visually-hidden {
     position: absolute;
-    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }

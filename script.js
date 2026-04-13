@@ -1,13 +1,7 @@
-// ==============================
-// ARMAZENAMENTO
-// ==============================
-
 let tasks = [];
+let currentFilter = "all";
 
-// ==============================
 // ELEMENTOS
-// ==============================
-
 const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
@@ -15,13 +9,10 @@ const taskCount = document.getElementById("taskCount");
 const clearCompletedBtn = document.getElementById("clearCompleted");
 const filterButtons = document.querySelectorAll(".filter-btn");
 const themeToggle = document.getElementById("themeToggle");
-
-// mensagem de lista vazia
 const emptyMessage = document.getElementById("emptyMessage");
 
-
 // ==============================
-// SALVAR / CARREGAR
+// STORAGE
 // ==============================
 
 function saveTasks() {
@@ -30,29 +21,47 @@ function saveTasks() {
 
 function loadTasks() {
     const stored = localStorage.getItem("tasks");
-
     if (stored) {
         tasks = JSON.parse(stored);
-        tasks.forEach(createTaskElement);
+        tasks.forEach(task => createTaskElement(task));
     }
 }
 
-
 // ==============================
-// ESTADO VAZIO
+// UI
 // ==============================
 
 function checkEmptyState() {
-    // mostra ou esconde mensagem
     emptyMessage.style.display = tasks.length === 0 ? "block" : "none";
 }
 
+function updateTaskCount() {
+    const total = tasks.length;
+    taskCount.textContent = total === 1 ? "1 tarefa" : `${total} tarefas`;
+}
+
+// ==============================
+// FILTRO
+// ==============================
+
+function applyFilter(filter) {
+    const allTasks = taskList.querySelectorAll(".task");
+
+    allTasks.forEach(task => {
+        const done = task.classList.contains("completed");
+
+        task.style.display =
+            filter === "all" ? "flex" :
+            filter === "completed" && done ? "flex" :
+            filter === "pending" && !done ? "flex" : "none";
+    });
+}
 
 // ==============================
 // CRIAR TAREFA
 // ==============================
 
-function createTaskElement(task) {
+function createTaskElement(task, isNew = false) {
     const li = document.createElement("li");
     li.classList.add("task");
     li.setAttribute("data-id", task.id);
@@ -66,27 +75,21 @@ function createTaskElement(task) {
     `;
 
     taskList.appendChild(li);
+    applyFilter(currentFilter);
 
-    li.style.background = "#dbeafe";
-
-setTimeout(() => {
-    li.style.background = "";
-}, 300);
-
+    if (isNew) {
+        li.style.background = "#dbeafe";
+        setTimeout(() => li.style.background = "", 300);
+    }
 }
 
-
 // ==============================
-// ADICIONAR TAREFA
+// ADICIONAR
 // ==============================
 
 function addTask() {
     const text = taskInput.value.trim();
-
-    if (!text) {
-        alert("Digite uma tarefa!");
-        return;
-    }
+    if (!text) return alert("Digite uma tarefa!");
 
     const task = {
         id: Date.now(),
@@ -95,102 +98,71 @@ function addTask() {
     };
 
     tasks.push(task);
-    createTaskElement(task);
+    createTaskElement(task, true);
 
     taskInput.value = "";
 
     saveTasks();
     updateTaskCount();
-    checkEmptyState(); // atualiza estado vazio
+    checkEmptyState();
 }
-
 
 // ==============================
 // EVENTOS
 // ==============================
 
-// botão
 addTaskBtn.addEventListener("click", addTask);
 
-// enter
 taskInput.addEventListener("keydown", e => {
     if (e.key === "Enter") addTask();
 });
 
-// lista (check + delete)
 taskList.addEventListener("click", e => {
-
     const taskItem = e.target.closest(".task");
     if (!taskItem) return;
 
-    const id = Number(taskItem.getAttribute("data-id"));
+    const id = Number(taskItem.dataset.id);
     const index = tasks.findIndex(t => t.id === id);
 
-    // marcar como concluída
+    if (index === -1) return;
+
     if (e.target.classList.contains("task-check")) {
         taskItem.classList.toggle("completed");
         tasks[index].completed = e.target.checked;
         saveTasks();
+        applyFilter(currentFilter);
     }
 
-    // deletar
     if (e.target.classList.contains("delete-btn")) {
+        taskItem.classList.add("removing");
 
-    // adiciona classe de animação
-    taskItem.classList.add("removing");
-
-    setTimeout(() => {
-        taskItem.remove();
-
-        tasks.splice(index, 1);
-        saveTasks();
-        updateTaskCount();
-        checkEmptyState();
-
-    }, 300); // tempo da animação
-}
+        setTimeout(() => {
+            taskItem.remove();
+            tasks.splice(index, 1);
+            saveTasks();
+            updateTaskCount();
+            checkEmptyState();
+        }, 300);
+    }
 });
-
-// ==============================
-// CONTADOR
-// ==============================
-
-function updateTaskCount() {
-    const total = tasks.length;
-
-    taskCount.textContent =
-        total === 1 ? "1 tarefa" : `${total} tarefas`;
-}
-
-
-// ==============================
-// LIMPAR CONCLUÍDAS
-// ==============================
 
 clearCompletedBtn.addEventListener("click", () => {
-
     tasks = tasks.filter(t => !t.completed);
-
     taskList.innerHTML = "";
-
     tasks.forEach(createTaskElement);
-
     saveTasks();
     updateTaskCount();
-    checkEmptyState(); // atualiza estado vazio
+    checkEmptyState();
 });
-
 
 // ==============================
 // DARK MODE
 // ==============================
 
 themeToggle.addEventListener("click", () => {
-
     document.body.classList.toggle("dark");
 
     const dark = document.body.classList.contains("dark");
-
     localStorage.setItem("theme", dark ? "dark" : "light");
 
     themeToggle.textContent = dark ? "☀️" : "🌙";
@@ -198,44 +170,46 @@ themeToggle.addEventListener("click", () => {
 
 function loadTheme() {
     const theme = localStorage.getItem("theme");
-
     if (theme === "dark") {
         document.body.classList.add("dark");
         themeToggle.textContent = "☀️";
     }
 }
 
-
 // ==============================
-// FILTROS
+// FILTRO BOTÕES
 // ==============================
 
 filterButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-
         filterButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
         const filter = btn.dataset.filter;
+        currentFilter = filter;
 
-        document.querySelectorAll(".task").forEach(task => {
-
-            const done = task.classList.contains("completed");
-
-            task.style.display =
-                filter === "all" ? "flex" :
-                filter === "completed" && done ? "flex" :
-                filter === "pending" && !done ? "flex" : "none";
-        });
+        localStorage.setItem("filter", filter);
+        applyFilter(filter);
     });
 });
 
-
 // ==============================
-// INICIALIZAÇÃO
+// INIT
 // ==============================
 
 loadTasks();
 loadTheme();
+
+const savedFilter = localStorage.getItem("filter") || "all";
+currentFilter = savedFilter;
+
+filterButtons.forEach(btn => {
+    if (btn.dataset.filter === savedFilter) {
+        btn.classList.add("active");
+    }
+});
+
+applyFilter(savedFilter);
+
 updateTaskCount();
-checkEmptyState(); // verifica ao iniciar
+checkEmptyState();
