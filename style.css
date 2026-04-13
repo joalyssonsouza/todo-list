@@ -146,6 +146,17 @@ body {
     border-radius: 8px;
 }
 
+/* ==============================
+   ESTADO VAZIO (sem tarefas)
+============================== */
+
+#emptyMessage {
+    text-align: center;
+    color: #999;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
 /* Dark Mode */
 
 body.dark .task {
