@@ -147,6 +147,16 @@ body {
 }
 
 /* Dark Mode */
+
+body.dark .task {
+    background: #2d3748 !important;
+    color: #f7fafc !important;
+}
+
+body.dark .task span {
+    color: #f7fafc !important;
+}
+
 body.dark {
     background: #1a202c;
 }
