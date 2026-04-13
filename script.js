@@ -66,6 +66,13 @@ function createTaskElement(task) {
     `;
 
     taskList.appendChild(li);
+
+    li.style.background = "#dbeafe";
+
+setTimeout(() => {
+    li.style.background = "";
+}, 300);
+
 }
 
 
@@ -128,15 +135,21 @@ taskList.addEventListener("click", e => {
 
     // deletar
     if (e.target.classList.contains("delete-btn")) {
+
+    // adiciona classe de animação
+    taskItem.classList.add("removing");
+
+    setTimeout(() => {
         taskItem.remove();
 
         tasks.splice(index, 1);
         saveTasks();
         updateTaskCount();
-        checkEmptyState(); // atualiza estado vazio
-    }
-});
+        checkEmptyState();
 
+    }, 300); // tempo da animação
+}
+});
 
 // ==============================
 // CONTADOR
