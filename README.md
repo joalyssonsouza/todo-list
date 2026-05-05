@@ -75,4 +75,4 @@ Aplicação adaptada para diferentes tamanhos de tela:
 Desenvolvido por Joalysson Santos🚀
 
  -💻 GitHub: https://joalyssonsouza.github.io/todo-list/
- -🔗 LinkedIn: https://joalysson-souza-santos-a006453ab
+ -🔗 LinkedIn: www.linkedin.com/in/joalysson-santos
